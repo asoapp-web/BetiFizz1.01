@@ -1,0 +1,62 @@
+[
+  {
+    "id": "lineup",
+    "question": "How many players does each team field at the start of a match?",
+    "options": ["10", "11", "12", "9"],
+    "correctIndex": 1
+  },
+  {
+    "id": "duration",
+    "question": "How long is each half in a standard adult match (regulation time)?",
+    "options": ["40 minutes", "45 minutes", "50 minutes", "30 minutes"],
+    "correctIndex": 1
+  },
+  {
+    "id": "keeper",
+    "question": "Which player is allowed to deliberately handle the ball inside their own penalty area?",
+    "options": ["Striker", "Goalkeeper", "Any defender", "Captain only"],
+    "correctIndex": 1
+  },
+  {
+    "id": "card",
+    "question": "A straight red card means the player is…",
+    "options": ["Warned only", "Sent off the field", "Suspended for one minute", "Given a free kick"],
+    "correctIndex": 1
+  },
+  {
+    "id": "corner",
+    "question": "When the ball wholly crosses the goal line last touched by a defender, the restart is usually…",
+    "options": ["Goal kick", "Corner kick", "Throw-in", "Drop ball"],
+    "correctIndex": 1
+  },
+  {
+    "id": "offside",
+    "question": "Offside is judged when a player is nearer to the opponent’s goal line than both the ball and…",
+    "options": ["The referee", "The second-last opponent", "Their own goalkeeper", "The center circle"],
+    "correctIndex": 1
+  },
+  {
+    "id": "freekick",
+    "question": "For a direct free kick, the ball may be kicked…",
+    "options": ["Only backward", "Directly into the goal without another touch", "Only by the goalkeeper", "Only from the center spot"],
+    "correctIndex": 1
+  },
+  {
+    "id": "penalty",
+    "question": "A penalty kick is taken from…",
+    "options": ["The corner arc", "The penalty mark", "The center spot", "Anywhere in the box"],
+    "correctIndex": 1
+  },
+  {
+    "id": "substitutes",
+    "question": "In most top competitions, how many substitutions are teams typically allowed from the bench (normal rules)?",
+    "options": ["3", "5", "Unlimited", "1"],
+    "correctIndex": 1
+  },
+  {
+    "id": "throwin",
+    "question": "At a throw-in, the ball must be released…",
+    "options": ["With one hand only", "From behind and over the head with both hands", "By kicking from the touchline", "By rolling with the foot"],
+    "correctIndex": 1
+  }
+]
