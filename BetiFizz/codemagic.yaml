@@ -1,0 +1,35 @@
+workflows:
+  betifizz-workflow:
+    name: BetiFizz
+    max_build_duration: 120
+    instance_type: mac_mini_m1
+    integrations:
+      app_store_connect: NNNNNNN
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.beti.fizz
+      vars:
+        BUNDLE_ID: "com.beti.fizz"
+        XCODE_SCHEME: "BetiFizz"
+        APP_STORE_APPLE_ID: "0"
+      xcode: latest
+    scripts:
+      - name: Set up provisioning profiles settings on Xcode project
+        script: xcode-project use-profiles
+      - name: Increment build number
+        script: |
+          cd "$CM_BUILD_DIR"
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
+          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+      - name: Build ipa for distribution
+        script: |
+          xcode-project build-ipa \
+            --project "BetiFizz.xcodeproj" \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
