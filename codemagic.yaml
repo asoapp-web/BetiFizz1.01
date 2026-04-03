@@ -18,35 +18,28 @@ workflows:
       - name: Set up provisioning profiles settings on Xcode project
         script: xcode-project use-profiles
       
-      - name: Fix Info.plist - add CFBundleIconName
+      - name: Clean build folder
         script: |
-          # Путь к Info.plist (обычно в Runner или основном проекте)
-          INFO_PLIST="BetiFizz/Info.plist"
+          xcodebuild clean -project "BetiFizz.xcodeproj" -scheme "$XCODE_SCHEME"
+          rm -rf ~/Library/Developer/Xcode/DerivedData/BetiFizz-*
+      
+      - name: Fix missing CFBundleIconName in project.pbxproj
+        script: |
+          # Добавляем CFBundleIconName через настройки проекта, а не Info.plist
+          cd "$CM_BUILD_DIR"
           
-          # Если не найден, ищем в стандартных местах
-          if [ ! -f "$INFO_PLIST" ]; then
-            INFO_PLIST="ios/Runner/Info.plist"
+          # Проверяем и добавляем настройку в проект
+          if ! grep -q "ASSETCATALOG_COMPILER_APPICON_NAME" "BetiFizz.xcodeproj/project.pbxproj"; then
+            echo "Adding ASSETCATALOG_COMPILER_APPICON_NAME to project"
+            sed -i '' 's/INFOPLIST_FILE = BetiFizz\/Info.plist;/INFOPLIST_FILE = BetiFizz\/Info.plist; ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;/g' BetiFizz.xcodeproj/project.pbxproj
           fi
-          if [ ! -f "$INFO_PLIST" ]; then
-            INFO_PLIST="$CM_BUILD_DIR/BetiFizz/Info.plist"
-          fi
-          
-          # Добавляем CFBundleIconName если отсутствует
-          if ! /usr/libexec/PlistBuddy -c "Print :CFBundleIconName" "$INFO_PLIST" 2>/dev/null; then
-            echo "Adding CFBundleIconName to Info.plist"
-            /usr/libexec/PlistBuddy -c "Add :CFBundleIconName string AppIcon" "$INFO_PLIST"
-          else
-            echo "CFBundleIconName already exists"
-          fi
-          
-          # Проверяем, что добавилось
-          /usr/libexec/PlistBuddy -c "Print :CFBundleIconName" "$INFO_PLIST"
       
       - name: Increment build number
         script: |
           cd "$CM_BUILD_DIR"
-          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID")
-          agvtool new-version -all $(($LATEST_BUILD_NUMBER + 1))
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID" 2>/dev/null || echo "0")
+          NEW_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
+          agvtool new-version -all $NEW_BUILD_NUMBER
       
       - name: Build ipa for distribution
         script: |
