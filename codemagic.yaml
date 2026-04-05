@@ -13,11 +13,10 @@ workflows:
         BUNDLE_ID: "com.beti.fizz"
         XCODE_SCHEME: "BetiFizz"
         APP_STORE_APPLE_ID: 6761179199
-      xcode: latest
- # Жестко задаем новые версии
+        # Жестко задаем новые версии
         NEW_VERSION: "1.1"  # Укажите нужную версию
         NEW_BUILD: "2"      # Укажите нужный билд-номер
-      xcode: latest
+      xcode: latest  # Только один раз!
     scripts:
       - name: Set up provisioning profiles settings on Xcode project
         script: xcode-project use-profiles
